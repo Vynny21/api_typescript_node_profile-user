@@ -1,31 +1,36 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+import express from 'express'
+import cors from 'cors'
+import mongoose from 'mongoose'
 
+import routes from './routes'
+
+/* Metodos construtores da aplicação */
 class App {
-  public express: express.Application;
+  public express: express.Application
 
-  public constructor() {
-    this.express = express();
+  public constructor () {
+    this.express = express()
+
+    this.middlewares()
+    this.database()
+    this.routes()
   }
 
-  private middlewares(): void {
-    this.express.use(express.json());
-    this.express.use(cors());
+  private middlewares (): void {
+    this.express.use(express.json())
+    this.express.use(cors())
   }
 
-  private database(): void {
-    mongoose.connect("", {
+  private database (): void {
+    mongoose.connect('mongodb+srv://vynny_mongodb:U9JgWXt0f7HDjLfa@cluster0-yzg9p.mongodb.net/tsnode?retryWrites=true&w=majority', {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+      useUnifiedTopology: true
+    })
   }
 
-  private routes(): void {
-    this.express.get("/", (req, res) => {
-      return res.send("Hello Word");
-    });
+  private routes (): void {
+    this.express.use(routes)
   }
 }
 
-export default new App().express;
+export default new App().express
